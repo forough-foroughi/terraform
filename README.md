@@ -1,1 +1,1 @@
-This repo is mein experience in terraform
+This repo is my experience in terraform

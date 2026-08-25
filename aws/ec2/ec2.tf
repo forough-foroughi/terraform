@@ -58,3 +58,12 @@ resource "aws_network_interface_attachment" "ec2-eni-attachment" {
     network_interface_id = aws_network_interface.ec2-eni[count.index].id
     device_index        = 1
 }
+
+# EBS attachment to EC2 instance
+resource "aws_volume_attachment" "ec2-ebs-attachment" {
+    count = var.ec2_instance_count
+    device_name = var.ec2_ebs_device_name
+    volume_id   = aws_ebs_volume.ec2_ebs[count.index].id
+    instance_id = aws_instance.ec2-vm[count.index].id
+
+}

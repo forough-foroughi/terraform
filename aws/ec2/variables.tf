@@ -1,3 +1,4 @@
+## Terraform AWS EC2 Configuration
 variable "aws_region" {
   description = "AWS region"
   type        = string
@@ -22,12 +23,14 @@ variable "ec2_instance_count" {
   default     = 1
 }
 
+# key pair name for SSH access
 variable "ec2_key_name" {
   description = "Key pair name for SSH access"
   type        = string
   default     = "terraform-key"
 }
 
+# user data script for EC2 instance
 variable "ec2_user_data" {
   description = "User data script for EC2 instance"
   type        = string
@@ -43,6 +46,7 @@ variable "ec2_user_data" {
                 EOF
 }
 
+# placement group for EC2 instance
 variable "placement_group" {
   description = "Placement group name for EC2 instance"
   type        = string
@@ -58,4 +62,27 @@ variable "placement_group" {
   } 
 }
 
+# EBS volume
+variable "ec2_ebs_size" {
+  description = "Size of the EBS volume in GB"
+  type        = number
+  default     = 2
+}
 
+variable "ec2_ebs_type" {
+  description = "Type of the EBS volume"
+  type        = string
+  default     = "gp2"
+}
+
+variable "ec2_ebs_encrypted" {
+  description = "Whether the EBS volume is encrypted"
+  type        = bool
+  default     = false
+}
+
+variable "ec2_ebs_device_name" {
+  description = "Device name for the EBS volume attachment"
+  type        = string
+  default     = "/dev/sdf"
+}

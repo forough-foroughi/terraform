@@ -42,3 +42,21 @@ variable "ec2_user_data" {
                 echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
                 EOF
 }
+
+variable "placement_group" {
+  description = "Placement group name for EC2 instance"
+  type        = string
+  default     = "placement-group-cluster"
+
+  validation {
+    condition     = contains(
+      ["placement-group-cluster", "placement-group-spread", "placement-group-partition"],
+      var.placement_group
+    )
+    
+    error_message = "Invalid placement group name. Must be one of: placement-group-cluster, placement-group-spread,
+                     placement-group-partition."
+  } 
+}
+
+

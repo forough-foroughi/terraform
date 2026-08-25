@@ -54,8 +54,7 @@ variable "placement_group" {
       var.placement_group
     )
     
-    error_message = "Invalid placement group name. Must be one of: placement-group-cluster, placement-group-spread,
-                     placement-group-partition."
+    error_message = "Invalid placement group name. Must be one of: placement-group-cluster, placement-group-spread,placement-group-partition."
   } 
 }
 

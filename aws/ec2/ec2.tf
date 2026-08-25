@@ -1,3 +1,12 @@
+# Terraform Configuration for AWS EC2 Instance
+data "aws_subnets" "default" {
+  filter {
+    name   = "default-for-az"
+    values = ["true"]
+  }
+  
+}
+
 # Create EC2 instance
 resource "aws_instance" "ec2-vm" {
     ami           = var.ec2_ami_id
@@ -12,6 +21,7 @@ resource "aws_instance" "ec2-vm" {
     }
 }
 
+# Create Elastic IP and Associate with EC2 Instance
 resource "aws_eip" "ec2-eip" {
     count = var.ec2_instance_count
     domain = "vpc"
@@ -28,3 +38,23 @@ resource "aws_eip_association" "ec2-eip-association" {
     allocation_id = aws_eip.ec2-eip[count.index].id
 }
 
+# Create EC2 Network Interface and Attach to Instance
+resource "aws_network_interface" "ec2-eni" {
+    count = var.ec2_instance_count
+
+    subnet_id       = data.aws_subnets.default.ids[count.index]
+    # private_ips     = ["10.0.0.${count.index + 10}"]
+    security_groups = [aws_security_group.ec2-web.id]
+
+    tags = {
+        Name = "Terraform-EC2-ENI"
+    }
+}
+
+resource "aws_network_interface_attachment" "ec2-eni-attachment" {
+    count = var.ec2_instance_count
+
+    instance_id          = aws_instance.ec2-vm[count.index].id
+    network_interface_id = aws_network_interface.ec2-eni[count.index].id
+    device_index        = 1
+}

@@ -99,3 +99,16 @@ variable "ec2_efs_performance_mode" {
   type        = string
   default     = "generalPurpose" # Options: generalPurpose, maxIO
 }
+
+# Application Load Balancer (ALB)
+variable "ec2_app_lb_type" {
+  description = "Type of Application Load Balancer"
+  type        = string
+  default     = "instance" # Options: instance, ip, lambda, alb
+}
+
+variable "ec2_app_lb_protocol_version" {
+  description = "Protocol version for the Application Load Balancer"
+  type        = string
+  default     = "HTTP1" # Options: HTTP1, HTTP2, GRPC
+}

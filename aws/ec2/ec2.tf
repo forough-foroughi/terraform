@@ -7,6 +7,10 @@ data "aws_subnets" "default" {
   
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
 # Create EC2 instance
 resource "aws_instance" "ec2-vm" {
     ami           = var.ec2_ami_id
@@ -66,4 +70,11 @@ resource "aws_volume_attachment" "ec2-ebs-attachment" {
     volume_id   = aws_ebs_volume.ec2_ebs[count.index].id
     instance_id = aws_instance.ec2-vm[count.index].id
 
+}
+
+# Add EC2 instances to ALB target group
+resource "aws_lb_target_group_attachment" "ec2-app-tg-attachment" {
+    count = var.ec2_instance_count
+    target_group_arn = aws_lb_target_group.ec2-app-tg.arn
+    target_id        = aws_instance.ec2-vm[count.index].id
 }

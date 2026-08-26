@@ -86,3 +86,16 @@ variable "ec2_ebs_device_name" {
   type        = string
   default     = "/dev/sdf"
 }
+
+# EFS file system
+variable "ec2_efs_throughput_mode" {
+  description = "Throughput mode for the EFS file system"
+  type        = string
+  default     = "bursting" # Options: standard, bursting, provisioned
+}
+
+variable "ec2_efs_performance_mode" {
+  description = "Performance mode for the EFS file system"
+  type        = string
+  default     = "generalPurpose" # Options: generalPurpose, maxIO
+}

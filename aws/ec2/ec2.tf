@@ -15,7 +15,7 @@ resource "aws_instance" "ec2-vm" {
     count         = var.ec2_instance_count
     user_data    = var.ec2_user_data
     security_groups = [aws_security_group.ec2-ssh.name, aws_security_group.ec2-web.name]
-    placement_group = aws_placement_group.placement-group-cluster.name
+    #placement_group = aws_placement_group.placement-group-cluster.name
     tags = {
         Name = "Terraform-EC2-Instance"
     }

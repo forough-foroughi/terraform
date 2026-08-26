@@ -47,3 +47,17 @@ resource "aws_security_group" "ec2-web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# Create Security Group - EFS Traffic
+resource "aws_security_group" "ec2-efs" {
+  name        = "ec2-efs"
+  description = "EC2 EFS"
+  egress {
+    description = "Allow all IP and Ports outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}

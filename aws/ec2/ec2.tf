@@ -18,7 +18,12 @@ resource "aws_instance" "ec2-vm" {
     key_name      = var.ec2_key_name
     count         = var.ec2_instance_count
     user_data    = var.ec2_user_data
+    # Comment the following line if you want to use ALB with EC2 instance.
     security_groups = [aws_security_group.ec2-ssh.name, aws_security_group.ec2-web.name]
+    
+    # This line is for using application load balancer with EC2 instance. Uncomment it if you want to use ALB.
+    #security_groups = [aws_security_group.ec2-web-lb.name]
+    
     #placement_group = aws_placement_group.placement-group-cluster.name
     tags = {
         Name = "Terraform-EC2-Instance"

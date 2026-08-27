@@ -48,4 +48,4 @@ resource "aws_lb_listener" "ec2-app-listener" {
   
 }
 
-# scheme = "internet-facing", "internal"
+

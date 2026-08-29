@@ -83,3 +83,11 @@ resource "aws_lb_target_group_attachment" "ec2-app-tg-attachment" {
     target_group_arn = aws_lb_target_group.ec2-app-tg.arn
     target_id        = aws_instance.ec2-vm[count.index].id
 }
+
+# Add EC2 instances to NLB target group
+resource "aws_lb_target_group_attachment" "ec2-net-tg-attachment" {
+    count = var.ec2_instance_count
+    target_group_arn = aws_lb_target_group.ec2-net-tg.arn
+    target_id        = aws_instance.ec2-vm[count.index].id
+    port             = 80
+}

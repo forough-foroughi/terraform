@@ -62,7 +62,7 @@ resource "aws_security_group" "ec2-efs" {
 
 }
 
-# Create Security Group - Load Balancer Traffic
+# Create Security Group - Application Load Balancer Traffic
 resource "aws_security_group" "ec2-app-lb" {
   name        = "ec2-app-lb"
   description = "EC2 Application Load Balancer"
@@ -87,22 +87,15 @@ resource "aws_security_group" "ec2-web-lb" {
   name        = "ec2-web-lb"
   description = "EC2 Web Traffic between Load Balancer and EC2 instances"
 
+  # Ingress rules to allow traffic from the Application Load Balancer security group
   ingress {
-    description = "Allow Port 80 from LB"
+    description = "Allow Port 80 from ALB"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [aws_security_group.ec2-app-lb.id]
   }
-
-  ingress {
-    description = "Allow Port 443 from LB"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_security_group.ec2-app-lb.id]
-  }
-
+  
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0

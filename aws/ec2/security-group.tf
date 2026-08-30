@@ -7,7 +7,7 @@ resource "aws_security_group" "ec2-ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.allowed_ssh_cidr]
   }
   egress {
     description = "Allow all IP and Ports outbound"
@@ -95,7 +95,7 @@ resource "aws_security_group" "ec2-web-lb" {
     protocol    = "tcp"
     cidr_blocks = [aws_security_group.ec2-app-lb.id]
   }
-  
+
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0

@@ -5,6 +5,12 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
+variable "allowed_ssh_cidr" {
+  description = "CIDR block allowed for SSH access (e.g., your IP/32 or VPN CIDR)"
+  type        = string
+  default     = "0.0.0.0/0" # WARNING: Change this to your IP for security!
+}
+
 variable "ec2_ami_id" {
   description = "AMI ID"
   type        = string
@@ -42,7 +48,7 @@ variable "ec2_user_data" {
                 yum install -y httpd
                 systemctl start httpd
                 systemctl enable httpd
-                echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+                echo "<h1>Hello World from $(hostname -f) in AZ $EC2_AVAIL_ZONE</h1>" > /var/www/html/index.html
                 EOF
 }
 
@@ -53,13 +59,13 @@ variable "placement_group" {
   default     = "placement-group-cluster"
 
   validation {
-    condition     = contains(
+    condition = contains(
       ["placement-group-cluster", "placement-group-spread", "placement-group-partition"],
       var.placement_group
     )
-    
+
     error_message = "Invalid placement group name. Must be one of: placement-group-cluster, placement-group-spread,placement-group-partition."
-  } 
+  }
 }
 
 # EBS volume
@@ -111,4 +117,30 @@ variable "ec2_app_lb_protocol_version" {
   description = "Protocol version for the Application Load Balancer"
   type        = string
   default     = "HTTP1" # Options: HTTP1, HTTP2, GRPC
+}
+
+variable "route53_zone_name" {
+  description = "Route 53 zone name"
+  type        = string
+  default     = "app.forough-forough.com"
+}
+
+variable "route53_IP_address" {
+  description = "Route 53 IP address"
+  type        = string
+  default     = "192.168.1.100"
+}
+
+variable "weighted_route53_records" {
+  description = "Route 53 IP address"
+  default = {
+    server1 = {
+      ip_address = "192.168.1.100"
+      weight     = 60
+    }
+    server2 = {
+      ip_address = "192.168.1.101"
+      weight     = 40
+    }
+  }
 }

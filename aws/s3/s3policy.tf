@@ -1,3 +1,4 @@
+# Policy for bucket created by s3bucket.tf
 resource "aws_s3_bucket_policy" "bucket_read_only" {
   bucket = aws_s3_bucket.s3-bucket.id
 
